@@ -8,6 +8,13 @@ app.secret_key = 'gizli_anahtar'
 
 CSV_DOSYASI = "sonuclar.csv"
 
+# Eğer CSV dosyası yoksa başlıkları ekle
+if not os.path.exists(CSV_DOSYASI):
+    with open(CSV_DOSYASI, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(["Sicil No", "İsim", "Soyisim", "Eğitim Başlangıç", "Eğitim Bitiş",
+                         "Geçen Süre (s)", "Doğru Cevap", "Toplam Soru", "Başarı Yüzdesi"])
+
 # Eğitim içeriği
 egitim_icerigi = {
     "baslik": "Nezaket Kuralları Eğitimi",
@@ -46,9 +53,12 @@ test_sorulari = [
 @app.route('/', methods=['GET', 'POST'])
 def giris():
     if request.method == 'POST':
-        sicil_no = request.form['sicil']
-        isim = request.form['isim']
-        soyisim = request.form['soyisim']
+        sicil_no = request.form.get('sicil', '').strip()
+        isim = request.form.get('isim', '').strip()
+        soyisim = request.form.get('soyisim', '').strip()
+
+        if not sicil_no or not isim or not soyisim:
+            return "Lütfen tüm alanları doldurun!", 400
 
         session['sicil_no'] = sicil_no
         session['isim'] = isim
@@ -73,30 +83,35 @@ def test():
 
         egitim_bitis = datetime.datetime.now()
         egitim_baslangic = datetime.datetime.fromisoformat(session.get('egitim_baslangic', egitim_bitis.isoformat()))
-        gecen_sure = (egitim_bitis - egitim_baslangic).total_seconds()
+        gecen_sure = int((egitim_bitis - egitim_baslangic).total_seconds())
 
         sicil_no = session.get('sicil_no', "Bilinmiyor")
         isim = session.get('isim', "Bilinmiyor")
         soyisim = session.get('soyisim', "Bilinmiyor")
 
+        # Sonucu CSV'ye kaydet
         with open(CSV_DOSYASI, mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow([sicil_no, isim, soyisim, egitim_baslangic.strftime("%Y-%m-%d %H:%M:%S"),
-                             egitim_bitis.strftime("%Y-%m-%d %H:%M:%S"), int(gecen_sure), skor, len(test_sorulari),
+                             egitim_bitis.strftime("%Y-%m-%d %H:%M:%S"), gecen_sure, skor, len(test_sorulari),
                              (skor / len(test_sorulari)) * 100])
 
-        return redirect(url_for('sonuc', skor=skor, sure=int(gecen_sure)))
+        return redirect(url_for('sonuc', skor=skor, sure=gecen_sure))
 
     return render_template('test.html', sorular=test_sorulari)
 
 
 @app.route('/sonuc')
 def sonuc():
-    skor = request.args.get('skor')
-    sure = request.args.get('sure')
+    try:
+        skor = int(request.args.get('skor', 0))
+        sure = int(request.args.get('sure', 0))
+    except ValueError:
+        return "Geçersiz skor veya süre verisi!", 400
+
     return render_template('sonuc.html', skor=skor, sure=sure)
 
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, debug=True)
