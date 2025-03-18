@@ -89,7 +89,6 @@ def test():
         isim = session.get('isim', "Bilinmiyor")
         soyisim = session.get('soyisim', "Bilinmiyor")
 
-        # Sonucu CSV'ye kaydet
         with open(CSV_DOSYASI, mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow([sicil_no, isim, soyisim, egitim_baslangic.strftime("%Y-%m-%d %H:%M:%S"),
@@ -98,7 +97,9 @@ def test():
 
         return redirect(url_for('sonuc', skor=skor, sure=gecen_sure))
 
-    return render_template('test.html', sorular=test_sorulari)
+    # `enumerate` kullanmak yerine liste halinde gönderelim
+    return render_template('test.html', sorular=list(enumerate(test_sorulari)))
+
 
 
 @app.route('/sonuc')

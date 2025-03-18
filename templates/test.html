@@ -1,19 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-    <title>Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Sayfası</title>
 </head>
 <body>
-    <h2>Test</h2>
+    <h1>{{ icerik.baslik }}</h1>
+    <p>{{ icerik.aciklama }}</p>
+
     <form method="POST">
-        {% for i, soru in enumerate(sorular) %}
-            <p><b>{{ soru.soru }}</b></p>
-            {% for secenek in soru.secenekler %}
-                <input type="radio" name="soru_{{ i }}" value="{{ secenek }}" required> {{ secenek }}<br>
-            {% endfor %}
-            <br>
+        {% for soru in sorular %}
+            <fieldset>
+                <legend>{{ soru.soru }}</legend>
+                {% for secenek in soru.secenekler %}
+                    <input type="radio" name="soru_{{ loop.index0 }}" value="{{ secenek }}" required>
+                    <label>{{ secenek }}</label><br>
+                {% endfor %}
+            </fieldset>
         {% endfor %}
-        <button type="submit">Gönder</button>
+        <button type="submit">Testi Bitir</button>
     </form>
 </body>
 </html>
