@@ -83,7 +83,7 @@ def test():
 
         egitim_bitis = datetime.datetime.now()
         egitim_baslangic = datetime.datetime.fromisoformat(session.get('egitim_baslangic', egitim_bitis.isoformat()))
-        gecen_sure = int((egitim_bitis - egitim_baslangic).total_seconds())
+        gecen_sure = (egitim_bitis - egitim_baslangic).total_seconds()
 
         sicil_no = session.get('sicil_no', "Bilinmiyor")
         isim = session.get('isim', "Bilinmiyor")
@@ -92,14 +92,13 @@ def test():
         with open(CSV_DOSYASI, mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow([sicil_no, isim, soyisim, egitim_baslangic.strftime("%Y-%m-%d %H:%M:%S"),
-                             egitim_bitis.strftime("%Y-%m-%d %H:%M:%S"), gecen_sure, skor, len(test_sorulari),
+                             egitim_bitis.strftime("%Y-%m-%d %H:%M:%S"), int(gecen_sure), skor, len(test_sorulari),
                              (skor / len(test_sorulari)) * 100])
 
-        return redirect(url_for('sonuc', skor=skor, sure=gecen_sure))
+        return redirect(url_for('sonuc', skor=skor, sure=int(gecen_sure)))
 
-    # `enumerate` kullanmak yerine liste halinde gönderelim
-    return render_template('test.html', sorular=list(enumerate(test_sorulari)))
-
+    # Eğitim içeriği ve test soruları ile birlikte şablona veri gönderiliyor
+    return render_template('test.html', sorular=test_sorulari, icerik=egitim_icerigi)
 
 
 @app.route('/sonuc')
