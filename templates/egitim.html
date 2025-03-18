@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ icerik.baslik }}</title>
+</head>
+<body>
+    <h2>{{ icerik.baslik }}</h2>
+    <p>{{ icerik.aciklama }}</p>
+    <iframe width="560" height="315" src="{{ icerik.video_url }}" frameborder="0" allowfullscreen></iframe>
+    <br><br>
+    <a href="{{ url_for('test') }}">Teste Başla</a>
+</body>
+</html>
