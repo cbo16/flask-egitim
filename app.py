@@ -2,6 +2,7 @@ import os
 import csv
 import datetime
 from flask import Flask, render_template, request, redirect, url_for, session,send_file
+from io import BytesIO
 
 app = Flask(__name__)
 app.secret_key = 'gizli_anahtar'
@@ -111,12 +112,21 @@ def sonuc():
 
 @app.route('/indir_sonuclar')
 def indir_sonuclar():
+    try:
+        with open(CSV_DOSYASI, 'r', encoding='utf-8-sig') as f:
+            csv_data = f.read()
+    except FileNotFoundError:
+        return "Dosya bulunamadı!", 404
+
+    memory = BytesIO()
+    memory.write(csv_data.encode('utf-8-sig'))
+    memory.seek(0)
+
     return send_file(
-        CSV_DOSYASI,
+        memory,
         as_attachment=True,
         mimetype="text/csv",
-        download_name="sonuclar.csv",
-        encoding="utf-8-sig"
+        download_name="sonuclar.csv"
     )
 
 if __name__ == "__main__":
