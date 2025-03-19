@@ -1,13 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ icerik.baslik }}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        iframe {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h2>{{ icerik.baslik }}</h2>
-    <p>{{ icerik.aciklama }}</p>
-    <iframe width="560" height="315" src="{{ icerik.video_url }}" frameborder="0" allowfullscreen></iframe>
-    <br><br>
-    <a href="{{ url_for('test') }}">Teste Başla</a>
+    <div class="container">
+        <h2>{{ icerik.baslik }}</h2>
+        <p>{{ icerik.aciklama }}</p>
+        <iframe width="560" height="315" src="{{ icerik.video_url }}" frameborder="0" allowfullscreen></iframe>
+        <br><br>
+        <a href="{{ url_for('test') }}">Teste Başla</a>
+    </div>
 </body>
 </html>
