@@ -97,8 +97,8 @@ def test():
 
         return redirect(url_for('sonuc', skor=skor, sure=int(gecen_sure)))
 
-    # Eğitim içeriği ve test soruları ile birlikte şablona veri gönderiliyor
-    return render_template('test.html', sorular=test_sorulari, icerik=egitim_icerigi)
+    return render_template('test.html', sorular=list(enumerate(test_sorulari)), icerik=egitim_icerigi)
+
 
 
 @app.route('/sonuc')

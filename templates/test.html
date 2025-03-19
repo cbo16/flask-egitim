@@ -10,12 +10,16 @@
     <p>{{ icerik.aciklama }}</p>
 
     <form method="POST" action="{{ url_for('test') }}">
-    {% for i, soru in enumerate(sorular) %}
-        <h3>{{ soru.soru }}</h3>
-        {% for secenek in soru.secenekler %}
-            <input type="radio" name="soru_{{ i }}" value="{{ secenek }}" required> {{ secenek }}<br>
-        {% endfor %}
+    {% for i, soru in sorular %}
+    <p><strong>{{ i+1 }}. {{ soru.soru }}</strong></p>
+    {% for secenek in soru.secenekler %}
+        <label>
+            <input type="radio" name="soru_{{ i }}" value="{{ secenek }}" required>
+            {{ secenek }}
+        </label><br>
     {% endfor %}
+	{% endfor %}
+
     <br>
     <input type="submit" value="Testi Gönder">
 	</form>
