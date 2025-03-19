@@ -33,10 +33,19 @@
             margin-bottom: 15px;
         }
 
-        iframe {
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: auto;
-            border-radius: 8px;
+            height: 100%;
         }
 
         a {
@@ -58,7 +67,9 @@
     <div class="container">
         <h2>{{ icerik.baslik }}</h2>
         <p>{{ icerik.aciklama }}</p>
-        <iframe width="560" height="315" src="{{ icerik.video_url }}" frameborder="0" allowfullscreen></iframe>
+        <div class="video-container">
+            <iframe width="560" height="315" src="{{ icerik.video_url }}" frameborder="0" allowfullscreen></iframe>
+        </div>
         <br><br>
         <a href="{{ url_for('test') }}">Teste Başla</a>
     </div>
