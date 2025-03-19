@@ -9,17 +9,16 @@
     <h1>{{ icerik.baslik }}</h1>
     <p>{{ icerik.aciklama }}</p>
 
-    <form method="POST">
-        {% for soru in sorular %}
-            <fieldset>
-                <legend>{{ soru.soru }}</legend>
-                {% for secenek in soru.secenekler %}
-                    <input type="radio" name="soru_{{ loop.index0 }}" value="{{ secenek }}" required>
-                    <label>{{ secenek }}</label><br>
-                {% endfor %}
-            </fieldset>
+    <form method="POST" action="{{ url_for('test') }}">
+    {% for i, soru in enumerate(sorular) %}
+        <h3>{{ soru.soru }}</h3>
+        {% for secenek in soru.secenekler %}
+            <input type="radio" name="soru_{{ i }}" value="{{ secenek }}" required> {{ secenek }}<br>
         {% endfor %}
-        <button type="submit">Testi Bitir</button>
-    </form>
+    {% endfor %}
+    <br>
+    <input type="submit" value="Testi Gönder">
+	</form>
+
 </body>
 </html>

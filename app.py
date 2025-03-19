@@ -19,7 +19,7 @@ if not os.path.exists(CSV_DOSYASI):
 egitim_icerigi = {
     "baslik": "Nezaket Kuralları Eğitimi",
     "aciklama": "Bu eğitimde toplumsal hayatta uyulması gereken temel nezaket kurallarını öğreneceksiniz.",
-    "video_url": "https://www.youtube.com/embed/_EXAMPLE_VIDEO_"  # Gerçek bir video linki ekleyebilirsin
+    "video_url": "https://www.youtube.com/watch?v=CMvZ9UWLQ7Q"  # Gerçek bir video linki ekleyebilirsin
 }
 
 # Test soruları
