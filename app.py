@@ -1,7 +1,7 @@
 import os
 import csv
 import datetime
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session,send_file
 
 app = Flask(__name__)
 app.secret_key = 'gizli_anahtar'
@@ -99,8 +99,6 @@ def test():
 
     return render_template('test.html', sorular=list(enumerate(test_sorulari)), icerik=egitim_icerigi)
 
-
-
 @app.route('/sonuc')
 def sonuc():
     try:
@@ -111,6 +109,9 @@ def sonuc():
 
     return render_template('sonuc.html', skor=skor, sure=sure)
 
+@app.route('/indir_sonuclar')
+def indir_sonuclar():
+    return send_file(CSV_DOSYASI, as_attachment=True)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
