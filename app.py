@@ -19,7 +19,7 @@ if not os.path.exists(CSV_DOSYASI):
 egitim_icerigi = {
     "baslik": "Nezaket Kuralları Eğitimi",
     "aciklama": "Bu eğitimde toplumsal hayatta uyulması gereken temel nezaket kurallarını öğreneceksiniz.",
-    "video_url": "https://www.youtube.com/watch?v=CMvZ9UWLQ7Q"  # Gerçek bir video linki ekleyebilirsin
+    "video_url": "https://www.youtube-nocookie.com/embed/foSfW8ZKLXs?si=vrMptc-EZ3xSVlZS"  # Gerçek bir video linki ekleyebilirsin
 }
 
 # Test soruları
@@ -111,7 +111,13 @@ def sonuc():
 
 @app.route('/indir_sonuclar')
 def indir_sonuclar():
-    return send_file(CSV_DOSYASI, as_attachment=True)
+    return send_file(
+        CSV_DOSYASI,
+        as_attachment=True,
+        mimetype="text/csv",
+        download_name="sonuclar.csv",
+        encoding="utf-8-sig"
+    )
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
